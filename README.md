@@ -165,7 +165,7 @@ This project is licensed under the MIT License.
 
 The Horizon Banking App is currently deployed and accessible here:
 
-🔗 **Live URL**: [https://horizon-banking.vercel.app](https://horizon-banking.vercel.app)
+🔗 **Live URL**: [https://horizon-banking-beryl.vercel.app](https://horizon-banking-beryl.vercel.app)
 
 You can explore the app using the following **test credentials**:
 

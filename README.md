@@ -1,36 +1,180 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Horizon Banking App 🏦
 
-First, run the development server:
+A modern, secure, and responsive full-stack banking dashboard built with **Next.js**, **Tailwind CSS**, **Appwrite**, **Plaid**, and **Dwolla**. Horizon enables users to manage their finances in one place — view accounts, transactions, and transfer money securely.
+
+---
+
+## 🚀 Features
+
+- 🔐 Secure user authentication with Appwrite
+- 🏦 Connect multiple bank accounts via Plaid
+- 📊 Real-time transaction feed and balance visualization
+- 💸 Send and receive money using Dwolla
+- 📈 Interactive charts for financial insights
+- 📱 Responsive UI with Tailwind CSS and ShadCN components
+- 🧪 Form validation using React Hook Form & Zod
+- 🐞 Error tracking and monitoring with Sentry
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** Next.js 14 (App Router), React, Tailwind CSS, TypeScript
+- **Backend:** Appwrite (Auth, Database)
+- **Integrations:** Plaid API, Dwolla API
+- **UI Components:** ShadCN
+- **Forms:** React Hook Form, Zod
+- **Charts:** Chart.js
+- **Monitoring:** Sentry
+
+---
+
+## 📦 Project Structure
+
+```
+.
+├── app/                    # Next.js app routes and pages
+├── components/             # Reusable UI components
+├── constants/              # Static values and labels
+├── lib/                    # API clients and utility functions
+├── public/                 # Static assets
+├── types/                  # Custom TypeScript definitions
+├── sentry.*.config.ts      # Sentry configuration files
+├── tailwind.config.ts      # Tailwind CSS setup
+└── .env.example            # Example environment variables
+```
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js & npm
+- Git
+
+### Clone and Install
+
+```bash
+git clone https://github.com/Anudeep5/Horizon-Banking.git
+cd Horizon-Banking
+npm install
+```
+
+### Setup Environment Variables
+
+Copy the `.env.example` to `.env.local` and fill in the required values:
+
+```env
+# Site URL
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Appwrite
+NEXT_PUBLIC_APPWRITE_ENDPOINT=
+NEXT_PUBLIC_APPWRITE_PROJECT=
+APPWRITE_DATABASE_ID=
+APPWRITE_USER_COLLECTION_ID=
+APPWRITE_BANK_COLLECTION_ID=
+APPWRITE_TRANSACTION_COLLECTION_ID=
+APPWRITE_SECRET=
+
+# Plaid
+PLAID_CLIENT_ID=
+PLAID_SECRET=
+PLAID_ENV=sandbox
+PLAID_PRODUCTS=auth,transactions,identity
+PLAID_COUNTRY_CODES=US,CA
+
+# Dwolla
+DWOLLA_KEY=
+DWOLLA_SECRET=
+DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
+DWOLLA_ENV=sandbox
+
+# Sentry (Optional)
+SENTRY_AUTH_TOKEN=
+```
+
+### Start the App
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit the app at [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🧪 Testing
 
-## Learn More
+This project uses client-side validation and interactive UI testing through form flows. (Unit and integration testing TBD)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ☁️ Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This app is ready to deploy on **Vercel**.
 
-## Deploy on Vercel
+1. Push code to GitHub
+2. Connect repo on Vercel
+3. Add environment variables
+4. Deploy and preview!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🐞 Monitoring
+
+Sentry is integrated to capture runtime errors and performance issues. To enable:
+
+1. Add your `SENTRY_DSN` in the `.env.local`
+2. Sentry auto-initializes through the Next.js middleware
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions!
+
+1. Fork this repo
+2. Create a new branch (`git checkout -b feature-name`)
+3. Commit changes (`git commit -m "feat: added feature"`)
+4. Push to branch (`git push origin feature-name`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgements
+
+- [Plaid API](https://plaid.com/)
+- [Dwolla](https://www.dwolla.com/)
+- [Appwrite](https://appwrite.io/)
+- [ShadCN UI](https://ui.shadcn.com/)
+- [Vercel](https://vercel.com/)
+
+
+---
+
+## 🚀 Live Demo & Test Credentials
+
+The Horizon Banking App is currently deployed and accessible here:
+
+🔗 **Live URL**: [https://horizon-banking-beryl.vercel.app](https://horizon-banking-beryl.vercel.app)
+
+You can explore the app using the following **test credentials**:
+
+```
+Email: test@test.com
+Password: test1234
+```
+
+> Note: This is a test account with mock data for demo purposes only. Do not input real financial information.
+
+---
+

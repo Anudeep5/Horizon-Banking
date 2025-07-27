@@ -38,29 +38,31 @@ jobs:
                   docker tag $ECR_REPOSITORY:latest ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
                   docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
 
-            - name: Download and sanitize ECS task definition
+            - name: Generate new ECS task definition
               run: |
                   aws ecs describe-task-definition \
                     --task-definition $ECS_TASK_DEFINITION \
-                    --query "taskDefinition" \
+                    --query 'taskDefinition' \
                     > task-def.json
 
-                  jq '{
-                    family: .family,
-                    networkMode: .networkMode,
-                    requiresCompatibilities: .requiresCompatibilities,
-                    cpu: .cpu,
-                    memory: .memory,
-                    executionRoleArn: .executionRoleArn,
-                    taskRoleArn: (if .taskRoleArn != null then .taskRoleArn else empty end),
-                    containerDefinitions: [
-                      .containerDefinitions[0] + {
-                        image: "'"${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"'"
-                      }
-                    ]
-                  }' task-def.json > new-task-def.json
+                  jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest" '
+                    {
+                      family,
+                      networkMode,
+                      executionRoleArn,
+                      taskRoleArn,
+                      requiresCompatibilities,
+                      cpu,
+                      memory,
+                      containerDefinitions: [
+                        .containerDefinitions[0] + {
+                          image: $IMAGE
+                        }
+                      ]
+                    }
+                  ' task-def.json > new-task-def.json
 
-                  echo "Final task definition:"
+                  echo "📦 Generated new task definition:"
                   cat new-task-def.json
 
             - name: Register new ECS task definition revision

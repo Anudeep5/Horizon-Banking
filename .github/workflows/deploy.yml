@@ -38,19 +38,20 @@ jobs:
                   docker tag $ECR_REPOSITORY:latest ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
                   docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
 
-            - name: Generate new ECS task definition
+            - name: Get latest task definition and inject new image
               run: |
                   aws ecs describe-task-definition \
                     --task-definition $ECS_TASK_DEFINITION \
-                    --query 'taskDefinition' \
-                    > task-def.json
+                    --query taskDefinition > task-def.json
 
-                  jq --arg IMAGE "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest" '
+                  IMAGE="${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"
+
+                  jq --arg IMAGE "$IMAGE" '
                     {
                       family,
                       networkMode,
-                      executionRoleArn,
-                      taskRoleArn,
+                      executionRoleArn: .executionRoleArn // "",
+                      taskRoleArn: .taskRoleArn // "",
                       requiresCompatibilities,
                       cpu,
                       memory,
@@ -62,11 +63,7 @@ jobs:
                     }
                   ' task-def.json > new-task-def.json
 
-                  echo "📦 Generated new task definition:"
-                  cat new-task-def.json
-
             - name: Register new ECS task definition revision
-              id: register-task-def
               run: |
                   TASK_DEF_ARN=$(aws ecs register-task-definition \
                     --cli-input-json file://new-task-def.json \

@@ -39,7 +39,7 @@ jobs:
                   docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
 
             - name: Get and modify latest task definition
-                run: |
+              run: |
                   aws ecs describe-task-definition \
                     --task-definition $ECS_TASK_DEFINITION \
                     --query taskDefinition \

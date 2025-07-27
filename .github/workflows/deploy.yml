@@ -40,10 +40,12 @@ jobs:
 
             - name: Download and sanitize ECS task definition
               run: |
-                  aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION \
-                    --query "taskDefinition" > task-def.json
+                  aws ecs describe-task-definition \
+                    --task-definition $ECS_TASK_DEFINITION \
+                    --query "taskDefinition" \
+                    > task-def.json
 
-                  cat task-def.json | jq '{
+                  jq '{
                     family: .family,
                     networkMode: .networkMode,
                     requiresCompatibilities: .requiresCompatibilities,
@@ -53,17 +55,21 @@ jobs:
                     taskRoleArn: (if .taskRoleArn != null then .taskRoleArn else empty end),
                     containerDefinitions: [
                       .containerDefinitions[0] + {
-                        image: "${{ steps.login-ecr.outputs.registry }}/'"$ECR_REPOSITORY"':latest"
+                        image: "'"${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"'"
                       }
                     ]
-                  }' > new-task-def.json
+                  }' task-def.json > new-task-def.json
+
+                  echo "Final task definition:"
+                  cat new-task-def.json
 
             - name: Register new ECS task definition revision
-              id: register-task
+              id: register-task-def
               run: |
                   TASK_DEF_ARN=$(aws ecs register-task-definition \
                     --cli-input-json file://new-task-def.json \
-                    --query 'taskDefinition.taskDefinitionArn' --output text)
+                    --query 'taskDefinition.taskDefinitionArn' \
+                    --output text)
                   echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
 
             - name: Deploy updated task to ECS
